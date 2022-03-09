@@ -24,6 +24,11 @@ let rotateBoard = false;
 let subX = 0;
 let subY = 0;
 
+/*	900x900 is the reference size we want to use
+ *	because the tiles on the board look nice with it */
+let oldCanvasWidth = 900;
+let oldCanvasHeight = 900;
+
 let tileSize = 70;
 let playerID;
 
@@ -359,10 +364,29 @@ killer.addEventListener("click", function()
 	socket.send("kill");
 });
 
+function updateCanvasSize()
+{
+	let box = canvas.getBoundingClientRect();
+
+	/*	Calculate a relation between the old canvas size
+	 *	and the new canvas size. This is done so that the board
+	 *	will always appear the same size even though the window is resized */
+	canvas.width /= (oldCanvasWidth / box.width);
+	canvas.height /= (oldCanvasHeight / box.height);
+
+	oldCanvasWidth = box.width;
+	oldCanvasHeight = box.height;
+}
+
 //	Once the page is fully loaded, ask the server about the game
 window.addEventListener("load", function()
 {
+	updateCanvasSize();
 	socket.send("new");
 });
 
-window.onresize = draw;
+window.addEventListener("resize", function()
+{
+	updateCanvasSize(),
+	draw();
+});
