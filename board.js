@@ -246,8 +246,19 @@ canvas.addEventListener("wheel", function(e)
 	draw(true);
 
 	//	Grow or shrink the tile size depending on how the user scrolled
-	tileSize += (e.wheelDelta / 120);
-	if(tileSize < 5) tileSize = 5;
+	let diff = e.wheelDelta / 20;
+	tileSize += diff;
+
+	//	If the tile size was modified, move the camera slightly
+	//	TODO Make the camera go towards the center of the screen
+	if(tileSize >= 50)
+	{
+		cameraX -= diff;
+		cameraY -= diff;
+	}
+
+	//	Forbid the tile size going below certain value
+	else tileSize = 50;
 
 	draw(false);
     return false; 
