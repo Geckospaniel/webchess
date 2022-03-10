@@ -32,6 +32,9 @@ let oldCanvasHeight = 900;
 let tileSize = 70;
 let playerID;
 
+let promotionX = null;
+let promotionY = null;
+
 function initImage(url)
 {
 	let img = new Image;
@@ -57,25 +60,39 @@ let pieceImages = [
 	initImage("https://upload.wikimedia.org/wikipedia/commons/e/e3/Chess_kdt60.png")
 ];
 
-function draw(clear)
+function clear()
+{
+	let ctx = canvas.getContext("2d");
+
+	let offsetX = 0 + cameraX;
+	let offsetY = 0 + cameraY;
+
+	//	In case the board is rotated, the width and height need to be swapped
+	let clearWidth = rotateBoard ? boardHeight : boardWidth;
+	let clearHeight = rotateBoard ? boardWidth : boardHeight;
+
+	//	If the promotion wheel is visible, clear a slightly larger area
+	if(promotionX != null)
+	{
+		offsetX -= tileSize * 1.5;
+		offsetY -= tileSize * 1.5;
+
+		clearWidth *= 3;
+		clearHeight *= 3;
+	}
+
+	/*	If the canvas should be cleared, calculate how large the board
+	 *	is and clear a rectangle that has the size of the board */
+	ctx.clearRect(offsetX, offsetY, tileSize * clearWidth, tileSize * clearHeight);
+}
+
+function draw()
 {
 	let ctx = canvas.getContext("2d");
 	ctx.lineWidth = 5;
 	
 	let offsetX = 0 + cameraX;
 	let offsetY = 0 + cameraY;
-
-	/*	If the canvas should be cleared, calculate how large the board
-	 *	is and clear a rectangle that has the size of the board */
-	if(clear)
-	{
-		//	In case the board is rotated, the width and height need to be swapped
-		let clearWidth = rotateBoard ? boardHeight : boardWidth;
-		let clearHeight = rotateBoard ? boardWidth : boardHeight;
-
-		ctx.clearRect(offsetX, offsetY, tileSize * clearWidth, tileSize * clearHeight);
-		return;
-	}
 
 	//	If the board is rotated, swap the offsets around for camera movement to work
 	if(rotateBoard)
@@ -169,6 +186,52 @@ function draw(clear)
 		ctx.strokeStyle = "yellow";
 		ctx.strokeRect(posX + 2.5, posY + 2.5, tileSize - 5, tileSize - 5);
 	}
+
+	if(promotionX != null)
+	{
+		let posX = offsetX + (tileSize * Math.abs(subX - promotionX));
+		let posY = offsetY + (tileSize * Math.abs(subY - promotionY));
+
+		//	Depending on the view, the pieces on the wheel must be flipped
+		let flipX = subX == 0 ? -1 : +1;
+		let flipY = subY == 0 ? -1 : +1;
+		let angle = 0.0;
+
+		if(rotateBoard)
+		{
+			/*	When the board is rotated, the order of the wheel pieces won't
+			 *	match what the player will be clicking. To fix this let's
+			 *	cycle the piece order by 90 degrees and negate Y flip */
+			angle = 90.0;
+			flipY = -flipY;
+
+			//	Positions and flips also need to be inverted
+			let oldX = posX;
+			posX = posY;
+			posY = oldX;
+			oldX = flipX;
+			flipX = flipY;
+			flipY = oldX;
+		}
+
+		//	Draw a filled circle
+		ctx.fillStyle = "orange";
+		ctx.beginPath();
+		ctx.arc(posX + tileSize / 2, posY + tileSize * 0.5, tileSize * 1.5, 0, 2 * Math.PI);
+		ctx.fill();
+
+		//	Draw pieces that a pawn can promote to in a circle
+		for(let i = 1; i <= 4; i++)
+		{
+			let rad = angle * Math.PI / 180.0;
+			ctx.drawImage(	pieceImages[i],
+							posX + Math.cos(rad) * (tileSize * flipX),
+							posY + Math.sin(rad) * (tileSize * flipY),
+							tileSize, tileSize);
+
+			angle += 90.0;
+		}
+	}
 }
 
 canvas.addEventListener("mousedown", function(e)
@@ -204,9 +267,31 @@ canvas.addEventListener("mousedown", function(e)
 			translatedMouseY = oldX;
 		}
 
-		//	Translate the mouse position to an index in the game board
+		//	Translate the mouse position to an index on the game board
 		selectionX = Math.abs(subX - Math.floor(translatedMouseX / (tileSize)));
 		selectionY = Math.abs(subY - Math.floor(translatedMouseY / (tileSize)));
+
+		//	Is the promotion wheel active?
+		if(promotionX != null)
+		{
+			let piece;
+
+			//	Find out which piece the player clicks
+			if(selectionX == promotionX && selectionY == promotionY - 1) piece = 3;
+			else if(selectionX == promotionX && selectionY == promotionY + 1) piece = 5;
+			else if(selectionX == promotionX + 1 && selectionY == promotionY) piece = 4;
+			else if(selectionX == promotionX - 1 && selectionY == promotionY) piece = 2;
+			else return;
+
+			clear();
+			promotionX = null;
+			promotionY = null;
+			draw();
+
+			//	Tell the server to promote the piece
+			socket.send("promote " + piece);
+			return;
+		}
 
 		//	At this point a move hasn't happened but the server might say otherwise
 		moveHappened = false;
@@ -230,15 +315,14 @@ canvas.addEventListener("mousemove", function(e)
 	//	If the mouse is being held, move the camera
 	if(mouseHeld)
 	{
-		//	Clear the old location
-		draw(true);
+		clear();
 
 		//	Move the camera by the mouse location difference
 		cameraX -= (e.x - oldMouseX);
 		cameraY -= (e.y - oldMouseY);
 
 		//	Draw the new location
-		draw(false);
+		draw();
 	}
 
 	oldMouseX = e.x;
@@ -247,7 +331,7 @@ canvas.addEventListener("mousemove", function(e)
 
 canvas.addEventListener("wheel", function(e)
 {
-	draw(true);
+	clear();
 
 	//	Grow or shrink the tile size depending on how the user scrolled
 	let diff = e.wheelDelta / 20;
@@ -264,7 +348,7 @@ canvas.addEventListener("wheel", function(e)
 	//	Forbid the tile size going below certain value
 	else tileSize = 50;
 
-	draw(false);
+	draw();
     return false; 
 
 }, false);
@@ -297,6 +381,11 @@ socket.addEventListener("message", function(e)
 				let y = Number(parts[i + 1]);
 				tileData[x][y].highlight = highlightOffset + Number(parts[i + 2]);
 			}
+		break;
+
+		case "promote":
+			promotionX = Number(parts[1]);
+			promotionY = Number(parts[2]);
 		break;
 
 		//	Information about where kings are checked
@@ -369,7 +458,7 @@ socket.addEventListener("message", function(e)
 		break;
 	}
 
-	draw(false);
+	draw();
 });
 
 //	If the "kill" button is pressed, tell the server to die
