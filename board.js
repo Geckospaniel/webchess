@@ -69,11 +69,15 @@ function draw(clear)
 	 *	is and clear a rectangle that has the size of the board */
 	if(clear)
 	{
-		ctx.clearRect(offsetX, offsetY, tileSize * boardWidth, tileSize * boardHeight);
+		//	In case the board is rotated, the width and height need to be swapped
+		let clearWidth = rotateBoard ? boardHeight : boardWidth;
+		let clearHeight = rotateBoard ? boardWidth : boardHeight;
+
+		ctx.clearRect(offsetX, offsetY, tileSize * clearWidth, tileSize * clearHeight);
 		return;
 	}
 
-	//	If the board is rotated, swap the offsets around
+	//	If the board is rotated, swap the offsets around for camera movement to work
 	if(rotateBoard)
 	{
 		let oldX = offsetX;
