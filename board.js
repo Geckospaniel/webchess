@@ -481,11 +481,6 @@ function updateCanvasSize()
 	oldCanvasHeight = box.height;
 }
 
-window.addEventListener("load", function()
-{
-	updateCanvasSize();
-});
-
 window.addEventListener("resize", function()
 {
 	updateCanvasSize(),

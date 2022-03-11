@@ -3,23 +3,33 @@
 	<head>
 		<link rel="stylesheet" href="style.css">
 		<link rel="stylesheet" href="roompicker.css">
+		<link rel="stylesheet" href="roomcreator.css">
 		<title>Chess</title>
 	</head>
 
 	<body>
 		<canvas hidden id="game" width="1000" height="1000"></canvas>
-		<table id="room-picker">
-			<tr>
-				<th>Play</th>
-				<th>Room Name</th>
-				<th>Players</th>
-			</tr>
-		</table>
+		<div id="main-menu">
+			<input id="room-name" type="text" placeholder="Room name">
+			<button id="create-room">Create a room</button>
+
+			<p id="name-error"></p>
+
+			<table id="room-picker">
+				<tr>
+					<th>Play</th>
+					<th>Room Name</th>
+					<th>Players</th>
+				</tr>
+			</table>
+		</div>
 
 		<button type="button" id="quit">kill</button>
 
 		<script type="text/javascript" src="client.js"></script>
-		<script type="text/javascript" src="roompicker.js"></script>
 		<script type="text/javascript" src="board.js"></script>
+		<script type="text/javascript" src="viewswitcher.js"></script>
+		<script type="text/javascript" src="roompicker.js"></script>
+		<script type="text/javascript" src="roomcreator.js"></script>
 	</body>
 </html>

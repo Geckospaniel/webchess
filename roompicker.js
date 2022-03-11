@@ -22,6 +22,7 @@ function listRoom(name, players, maxPlayers)
 	{
 		//	The name of the room is always in the value of the next element
 		let roomName = this.nextSibling.innerHTML;
+		socket.send("join " + roomName);
 	});
 
 	let joinContainer = document.createElement("th");
@@ -33,6 +34,7 @@ function listRoom(name, players, maxPlayers)
 	let playerCount = document.createElement("th");
 	playerCount.innerHTML = players + "/" + maxPlayers;
 
+	//	Add the room entry parts
 	entry.appendChild(joinButton);
 	entry.appendChild(roomName);
 	entry.appendChild(playerCount);
@@ -45,8 +47,16 @@ socket.addEventListener("message", function(e)
 {
 	let parts = e.data.split(" ");
 	console.log(parts);
-});
 
-listRoom("test1", "1", "2");
-listRoom("jdsfkjsldfkjkldsgf123", "2", "2");
-listRoom("test3", "10", "50");
+	switch(parts[0])
+	{
+		case "list":
+			for(let i = 1; i < parts.length; i++)
+				listRoom(parts[i], "1", "2");
+		break;
+
+		case "join":
+			toggleView();
+		break;
+	}
+});
