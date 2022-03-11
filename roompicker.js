@@ -6,27 +6,32 @@ function listRoom(name, players, maxPlayers)
 {
 	let rootDiv = document.getElementById("room-picker");
 
-	let entry = document.createElement("div");
+	let entry = document.createElement("tr");
 	entry.className = "room-picker-entry";
 	entry.style.backgroundColor = dark ? "gray" : "white";
 
-	let spectate = Number(players) >= Number(maxPlayers);
 	let joinButton = document.createElement("button");
 	joinButton.className = "room-picker-join";
+	joinButton.style.backgroundColor = dark ? "gray" : "white";
 
 	//	Tell the user whether they spectate or play
+	let spectate = Number(players) >= Number(maxPlayers);
 	joinButton.innerHTML = spectate ? "Spectate" : "Join";
 
-	//	Prevent room names being too long
-	if(name.length > 20) name = name.slice(0, 20) + "...";
+	joinButton.addEventListener("click", function(e)
+	{
+		//	The name of the room is always in the value of the next element
+		let roomName = this.nextSibling.innerHTML;
+	});
 
-	let roomName = document.createElement("p1");
-	roomName.className = "room-picker-name";
+	let joinContainer = document.createElement("th");
+	joinContainer.appendChild((joinButton));
+
+	let roomName = document.createElement("th");
 	roomName.innerHTML = name;
 
-	let playerCount = document.createElement("p1");
+	let playerCount = document.createElement("th");
 	playerCount.innerHTML = players + "/" + maxPlayers;
-	playerCount.className = "room-picker-players";
 
 	entry.appendChild(joinButton);
 	entry.appendChild(roomName);
@@ -35,6 +40,12 @@ function listRoom(name, players, maxPlayers)
 
 	dark = !dark;
 }
+
+socket.addEventListener("message", function(e)
+{
+	let parts = e.data.split(" ");
+	console.log(parts);
+});
 
 listRoom("test1", "1", "2");
 listRoom("jdsfkjsldfkjkldsgf123", "2", "2");

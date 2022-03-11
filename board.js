@@ -1,6 +1,5 @@
 "use strict";
 
-const socket = new WebSocket("ws://localhost:9002");
 let canvas = document.getElementById("game");
 
 let moveHappened = false;
@@ -482,11 +481,9 @@ function updateCanvasSize()
 	oldCanvasHeight = box.height;
 }
 
-//	Once the page is fully loaded, ask the server about the game
 window.addEventListener("load", function()
 {
 	updateCanvasSize();
-	socket.send("new");
 });
 
 window.addEventListener("resize", function()
