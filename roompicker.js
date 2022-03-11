@@ -51,8 +51,8 @@ socket.addEventListener("message", function(e)
 	switch(parts[0])
 	{
 		case "list":
-			for(let i = 1; i < parts.length; i++)
-				listRoom(parts[i], "1", "2");
+			for(let i = 1; i < parts.length; i+=3)
+				listRoom(parts[i], parts[i + 1], parts[i + 2]);
 		break;
 
 		case "join":
