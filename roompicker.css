@@ -1,0 +1,40 @@
+#room-picker {
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	background-color: green;
+	width: 100%;
+	height: 100%;
+}
+
+.room-picker-entry {
+	width: 100%;
+	height: 25px;
+}
+
+.room-picker-join {
+	position: relative;
+
+	left: 5%;
+	width: 10%;
+	height: 100%;
+}
+
+.room-picker-name {
+	display: inline-block;
+	position: relative;
+
+	left: 30%;
+	width: 30%;
+	height: 100%;
+}
+
+.room-picker-players {
+	display: inline-block;
+	position: relative;
+
+	left: 50%;
+	width: 10%;
+	height: 100%;
+}
