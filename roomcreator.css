@@ -1,0 +1,13 @@
+#room-name {
+	position: relative;
+	top: 20px;
+}
+
+#create-room {
+	position: relative;
+	top: 20px;
+}
+
+#name-error {
+	color: red;
+}
