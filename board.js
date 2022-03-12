@@ -41,22 +41,21 @@ function initImage(url)
 	return img;
 }
 
-//	Load images for the pieces from wikimedia
-//	TODO load local SVG's rather than remote PNG's
+//	Load SVG's for the pieces from wikimedia
 let pieceImages = [
-	initImage("https://upload.wikimedia.org/wikipedia/commons/0/04/Chess_plt60.png"),
-	initImage("https://upload.wikimedia.org/wikipedia/commons/9/9b/Chess_blt60.png"),
-	initImage("https://upload.wikimedia.org/wikipedia/commons/2/28/Chess_nlt60.png"),
-	initImage("https://upload.wikimedia.org/wikipedia/commons/5/5c/Chess_rlt60.png"),
-	initImage("https://upload.wikimedia.org/wikipedia/commons/4/49/Chess_qlt60.png"),
-	initImage("https://upload.wikimedia.org/wikipedia/commons/3/3b/Chess_klt60.png"),
+	initImage("https://upload.wikimedia.org/wikipedia/commons/4/45/Chess_plt45.svg"),
+	initImage("https://upload.wikimedia.org/wikipedia/commons/b/b1/Chess_blt45.svg"),
+	initImage("https://upload.wikimedia.org/wikipedia/commons/7/70/Chess_nlt45.svg"),
+	initImage("https://upload.wikimedia.org/wikipedia/commons/7/72/Chess_rlt45.svg"),
+	initImage("https://upload.wikimedia.org/wikipedia/commons/1/15/Chess_qlt45.svg"),
+	initImage("https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg"),
 
-	initImage("https://upload.wikimedia.org/wikipedia/commons/c/cd/Chess_pdt60.png"),
-	initImage("https://upload.wikimedia.org/wikipedia/commons/8/81/Chess_bdt60.png"),
-	initImage("https://upload.wikimedia.org/wikipedia/commons/f/f1/Chess_ndt60.png"),
-	initImage("https://upload.wikimedia.org/wikipedia/commons/a/a0/Chess_rdt60.png"),
-	initImage("https://upload.wikimedia.org/wikipedia/commons/a/af/Chess_qdt60.png"),
-	initImage("https://upload.wikimedia.org/wikipedia/commons/e/e3/Chess_kdt60.png")
+	initImage("https://upload.wikimedia.org/wikipedia/commons/c/c7/Chess_pdt45.svg"),
+	initImage("https://upload.wikimedia.org/wikipedia/commons/9/98/Chess_bdt45.svg"),
+	initImage("https://upload.wikimedia.org/wikipedia/commons/e/ef/Chess_ndt45.svg"),
+	initImage("https://upload.wikimedia.org/wikipedia/commons/f/ff/Chess_rdt45.svg"),
+	initImage("https://upload.wikimedia.org/wikipedia/commons/4/47/Chess_qdt45.svg"),
+	initImage("https://upload.wikimedia.org/wikipedia/commons/f/f0/Chess_kdt45.svg")
 ];
 
 function clear()
