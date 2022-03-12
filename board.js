@@ -157,6 +157,16 @@ function draw()
 				//	Draw the player ID of the piece
 				ctx.fillStyle = "black";
 				ctx.fillText(String(tileData[x][y].player), posX, posY + tileSize);
+
+				////	Save the old transform and start drawing from the piece position
+				//ctx.save();
+				//ctx.translate(posX, posY);
+				//ctx.scale(1.5, 1.5);
+
+				//ctx.fillStyle = "white";
+				//ctx.fill(piecePathData[0]);
+
+				//ctx.restore();
 			}
 
 			isBlack = !isBlack;
