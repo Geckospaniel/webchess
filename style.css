@@ -8,11 +8,8 @@
 	height: 100%;
 }
 
-#quit {
-	position: absolute;
-	left: 0px;
-	top: 0px;
-	z-index: 100;
+body {
+	background-image: url("https://cdn.pixabay.com/photo/2017/09/08/20/29/chess-2730034_1280.jpg");
 }
 
 #main-menu {
@@ -24,5 +21,5 @@
 	height: 100%;
 
 	text-align: center;
-	background-color: blue;
+	background-color: #000000D0;
 }

@@ -10,10 +10,25 @@
 
 .room-picker-entry {
 	width: 100%;
-	height: 25px;
+	height: 30px;
+}
+
+tr {
+	background-color: #202121;
+}
+
+th {
+	width: 33%;
+	color: #b2b9cf;
 }
 
 .room-picker-join {
-	width: 100%;
-	border: none;
+	border-radius: 8px;
+	font-weight: bold;
+	color: #b2b9cf;
+
+	box-shadow: 2px 1px black;
+
+	height: inherit;
+	width: 200px;
 }

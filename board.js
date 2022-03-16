@@ -469,13 +469,6 @@ socket.addEventListener("message", function(e)
 	draw();
 });
 
-//	If the "kill" button is pressed, tell the server to die
-let killer = document.getElementById("quit");
-killer.addEventListener("click", function()
-{
-	socket.send("kill");
-});
-
 function updateCanvasSize()
 {
 	let box = canvas.getBoundingClientRect();
